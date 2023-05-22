@@ -115,12 +115,40 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("This vehicle is already in the garage.");
                 m_garageLogic.setVehicleStatus(licenseNumber, eVehicleStatus.underRepair);
             }
+        }
 
+        private void printVehicleOptions()
+        {
+            Console.WriteLine("Please enter a valid vehicle type:");
+            Console.WriteLine("1 - Fuel car ");
+            Console.WriteLine("2 - Electric car");
+            Console.WriteLine("3 - Fuel motorcycle");
+            Console.WriteLine("4 - Electric motorcycle");
+            Console.WriteLine("5 - Fuel truck");
         }
 
         private void addVehicleUI(string i_LicenseNumber)
         {
-            
+            int vehicleTypeNumber;
+            Vehicle newVehicle;
+            string ownerPhoneNumber;
+            string ownerName;
+
+            printVehicleOptions();
+            vehicleTypeNumber = getInput(m_garageLogic.getNumOfVehicleTypes());//TODO
+            newVehicle = m_garageLogic.createInstanceOfVehicle(vehicleTypeNumber);
+
+            fillOutVehicleDataFromUser(newVehicle,i_LicenseNumber);
+
+            readPhoneNumberAndName(ref ownerPhoneNumber, ref ownerName);
+
+            m_garageLogic.addVehicleToGarageDictionary(newVehicle, ownerPhoneNumber, ownerName);
+
+            Console.WriteLine("Vehicle added successfully to garage!");//format
+        }
+
+        private int getInput(int i_numOfOptions)//TODO
+        {
         }
     }
 }
