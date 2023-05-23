@@ -20,5 +20,32 @@ namespace Ex03.GarageLogic
         {
             m_Vehicles[i_LicenseNumber].VehicleStatus = i_Status;
         }
+
+        public Vehicle createInstanceOfVehicle(int i_VehicleTypeNumber)
+        {
+            Vehicle returnVehicle=null;
+            switch(i_VehicleTypeNumber)
+            {
+                case 1:
+                    returnVehicle = new Car("fuel");
+                    break;
+                case 2:
+                    returnVehicle = new Car("electric");
+                    break;
+                case 3:
+                    returnVehicle = new Motorcycle("fuel");
+                    break;
+                case 4:
+                    returnVehicle = new Motorcycle("electric");
+                    break;
+                case 5:
+                    returnVehicle = new Truck();
+                    break;
+                default:
+                    throw new FormatException();//change
+            }
+
+            return returnVehicle;
+        }
     }
 }

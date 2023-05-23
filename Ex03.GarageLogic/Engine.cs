@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    abstract class Engine
+    public abstract class Engine
     {
+        private float m_EnergyPercentage;
+
         public abstract string getEngineType();
-    }
     }
 }

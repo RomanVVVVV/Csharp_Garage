@@ -147,8 +147,14 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("Vehicle added successfully to garage!");//format
         }
 
-        private int getInput(int i_numOfOptions)//TODO
+        private void fillOutVehicleDataFromUser(Vehicle i_NewVehicle, string i_LicenseNumber)
         {
+            
+        }
+
+        private int getInput(int i_numOfOptions)
+        {
+            
         }
     }
 }

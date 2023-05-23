@@ -5,15 +5,12 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class Motorcycle : Vehicle
+    class Truck : Vehicle
     {
-        private Engine m_engine;
-
-
-
-        public Motorcycle()
+        public Truck()
         {
-            m_Wheels = new List<Wheel>(2);
+            m_Engine = new FuelEngine(135, eNums.Soler);
+            
         }
     }
 }
