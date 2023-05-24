@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ex03.GarageLogic.MyEnums;
+using Ex03.GarageLogic;
 
 
 namespace Ex03.ConsoleUI
@@ -18,7 +19,9 @@ namespace Ex03.ConsoleUI
             while(userWishesToExit==false)
             {
                 diplayGarageMenu();
-                userChoice = readInput();//while not valid
+                userChoice = (eUserMainMenuAction)getInput(1,8);//while not valid
+                
+                //userChoice = eUserMainMenuAction.insertNewVehicle;
 
                 if(userChoice == eUserMainMenuAction.insertNewVehicle)
                 {
@@ -26,23 +29,23 @@ namespace Ex03.ConsoleUI
                 }
                 else if (userChoice == eUserMainMenuAction.displayListOfLicenseNumbers)
                 {
-                    displayListOfLicenseNumbersUI();
+                    //displayListOfLicenseNumbersUI();
                 }
                 else if (userChoice == eUserMainMenuAction.changeStatusOfVehicle)
                 {
-                    changeStatusOfVehicleUI();
+                    //changeStatusOfVehicleUI();
                 }
                 else if (userChoice == eUserMainMenuAction.inflateWheelsOfVehicle)
                 {
-                    inflateWheelsOfVehicleUI();
+                    //inflateWheelsOfVehicleUI();
                 }
                 else if (userChoice == eUserMainMenuAction.refuelVehicle)
                 {
-                    refuelVehicleUI();
+                    //refuelVehicleUI();
                 }
                 else if (userChoice == eUserMainMenuAction.chargeVehicle)
                 {
-                    chargeVehicleUI();
+                    //chargeVehicleUI();
                 }
                 else if (userChoice == eUserMainMenuAction.displayDataOfVehicle)
                 {
@@ -50,7 +53,7 @@ namespace Ex03.ConsoleUI
                 }
                 else if (userChoice == eUserMainMenuAction.exitProgram)
                 {
-                    exitProgram();
+                    //exitProgram();
                 }
             }
         }
@@ -103,7 +106,7 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("Please insert license number.");
             licenseNumber = Console.ReadLine(); // maybe check input ?
             
-            carIsInGarage= m_garageLogic.isThisVehicleInTheGarage(licenseNumber);//easy
+            carIsInGarage= m_garageLogic.isThisVehicleInTheGarage(licenseNumber);//easy ADD!!
 
             if(carIsInGarage == false)//add  car 
             {
@@ -115,6 +118,24 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("This vehicle is already in the garage.");
                 m_garageLogic.setVehicleStatus(licenseNumber, eVehicleStatus.underRepair);
             }
+        }
+
+        private void displayDataOfVehicleUI()
+        {
+            string licenseNumber= null;
+            bool carIsInGarage = false;
+            VehicleInGarage selectedVehicle;
+
+            while (carIsInGarage == false)
+            {
+                Console.Clear();
+                Console.WriteLine("Please insert license number:");
+                licenseNumber = Console.ReadLine();
+                carIsInGarage = m_garageLogic.isThisVehicleInTheGarage(licenseNumber);
+            }
+
+            selectedVehicle = m_garageLogic.getVehicleInGarageByLicenseNumber(licenseNumber);
+            selectedVehicle.displayAllData();
         }
 
         private void printVehicleOptions()
@@ -129,32 +150,96 @@ namespace Ex03.ConsoleUI
 
         private void addVehicleUI(string i_LicenseNumber)
         {
-            int vehicleTypeNumber;
+            bool inputSuccessful = false;
+            int vehicleTypeNumber=2;//change to -1 later
             Vehicle newVehicle;
             string ownerPhoneNumber;
             string ownerName;
+            int firstOption = 1;
+            int lastOption = 5;
+
 
             printVehicleOptions();
-            vehicleTypeNumber = getInput(m_garageLogic.getNumOfVehicleTypes());//TODO
-            newVehicle = m_garageLogic.createInstanceOfVehicle(vehicleTypeNumber);
+            vehicleTypeNumber = getInput(firstOption, lastOption);
+            newVehicle = m_garageLogic.createInstanceOfVehicle(vehicleTypeNumber,i_LicenseNumber);
 
-            fillOutVehicleDataFromUser(newVehicle,i_LicenseNumber);
+            inputSuccessful = fillOutVehicleDataFromUser(newVehicle);
 
-            readPhoneNumberAndName(ref ownerPhoneNumber, ref ownerName);
+            if(inputSuccessful)
+            {
+                readPhoneNumberAndName(out ownerPhoneNumber, out ownerName);
+                m_garageLogic.addVehicleToGarageDictionary(newVehicle, ownerPhoneNumber, ownerName);
 
-            m_garageLogic.addVehicleToGarageDictionary(newVehicle, ownerPhoneNumber, ownerName);
-
-            Console.WriteLine("Vehicle added successfully to garage!");//format
-        }
-
-        private void fillOutVehicleDataFromUser(Vehicle i_NewVehicle, string i_LicenseNumber)
-        {
+                Console.WriteLine("Vehicle added successfully to garage!");//format
+            }
+            else
+            {
+                Console.WriteLine("Vehicle input unsuccessful, you can try again.\n"
+                                  + "press ENTER to return to main menu");
+                Console.ReadLine();
+            }
             
         }
 
-        private int getInput(int i_numOfOptions)
+        private bool fillOutVehicleDataFromUser(Vehicle i_NewVehicle)
         {
-            
+            bool isRegistrationSuccessful = false;
+            string input;
+            List<object> inputsFromUser= new List<object>();
+            string displayMessageToUser = i_NewVehicle.getDescriptionOfTypesToInput();
+            List<Type> listOfMemberTypes = i_NewVehicle.getListOfMemberTypesToFill();
+
+            Console.Clear();
+            Console.Write(displayMessageToUser);
+
+            for(int i = 0; i < listOfMemberTypes.Count; i++)
+            {
+                input = Console.ReadLine();
+                inputsFromUser.Add(parseFromStringToType(listOfMemberTypes[i],input));
+            }
+
+            isRegistrationSuccessful = i_NewVehicle.useInputsToRegisterVehicle(inputsFromUser);
+
+            return isRegistrationSuccessful;
+        }
+
+        private object parseFromStringToType(Type i_Type, string i_Input)//add checks and stuff
+        {
+            return Convert.ChangeType(i_Input, i_Type);
+        }
+
+        private int getInput(int i_FirstOption, int i_LastOption)//change ?
+        {
+            int choice = -1;
+            bool isNumber;
+            bool? validInputInserted = null;
+            string userInput = null;
+
+            userInput = Console.ReadLine();
+            isNumber = int.TryParse(userInput, out choice);
+            if (isNumber == true)
+            {
+                validInputInserted = (choice <= i_LastOption) && (choice >= i_FirstOption);
+                if (validInputInserted.GetValueOrDefault() == false)
+                {
+                    throw new ValueOutRangeException(new Exception(), i_FirstOption, i_LastOption);
+                }
+            }
+            else
+            {
+                throw new FormatException();
+            }
+
+            return choice;
+        }
+
+        private void readPhoneNumberAndName(out string i_OwnerPhoneNumber, out string i_OwnerName)
+        {
+            Console.Clear();
+            Console.WriteLine("Please enter your name");
+            i_OwnerName = Console.ReadLine();
+            Console.WriteLine("Please enter your phone number");
+            i_OwnerPhoneNumber = Console.ReadLine();
         }
     }
 }

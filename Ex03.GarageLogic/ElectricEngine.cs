@@ -13,5 +13,22 @@ namespace Ex03.GarageLogic
         {
             return "electric";
         }
+
+        public ElectricEngine(float i_MaximumBatteryTimeInHours)
+        {
+            m_MaximumBatteryTimeInHours = i_MaximumBatteryTimeInHours;
+        }
+
+        public float MaximumBatteryTimeInHours
+        {
+            get
+            {
+                return m_MaximumBatteryTimeInHours;
+            }
+            set
+            {
+                m_MaximumBatteryTimeInHours = value;
+            }
+        }
     }
 }

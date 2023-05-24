@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
 
 namespace Ex03.GarageLogic
 {
@@ -10,18 +8,18 @@ namespace Ex03.GarageLogic
     public class GarageLogic
     {
         private Dictionary<string, VehicleInGarage> m_VehiclesInGarage = new Dictionary<string, VehicleInGarage>();
-
+        
         public bool isThisVehicleInTheGarage(string licenseNumber)
         {
-            return false;
+            return m_VehiclesInGarage.ContainsKey(licenseNumber);
         }
 
         public void setVehicleStatus(string i_LicenseNumber, eVehicleStatus i_Status)
         {
-            m_Vehicles[i_LicenseNumber].VehicleStatus = i_Status;
+            m_VehiclesInGarage[i_LicenseNumber].VehicleStatus = i_Status;
         }
 
-        public Vehicle createInstanceOfVehicle(int i_VehicleTypeNumber)
+        public Vehicle createInstanceOfVehicle(int i_VehicleTypeNumber,string i_LicenseNumber)
         {
             Vehicle returnVehicle=null;
             switch(i_VehicleTypeNumber)
@@ -39,13 +37,26 @@ namespace Ex03.GarageLogic
                     returnVehicle = new Motorcycle("electric");
                     break;
                 case 5:
-                    returnVehicle = new Truck();
+                    returnVehicle = new Truck();//done
                     break;
                 default:
-                    throw new FormatException();//change
+                    throw new FormatException();//change, temporary
             }
 
+            returnVehicle.LicenseNumber = i_LicenseNumber;
+
             return returnVehicle;
+        }
+
+        public void addVehicleToGarageDictionary(Vehicle i_NewVehicle, string i_OwnerPhoneNumber, string i_OwnerName)
+        {
+            VehicleInGarage newCarToAddToGarage = new VehicleInGarage(i_NewVehicle, i_OwnerPhoneNumber, i_OwnerName);
+            m_VehiclesInGarage[i_NewVehicle.LicenseNumber] = newCarToAddToGarage;
+        }
+
+        public VehicleInGarage getVehicleInGarageByLicenseNumber(string i_LicenseNumber)
+        {
+            return m_VehiclesInGarage[i_LicenseNumber];
         }
     }
 }

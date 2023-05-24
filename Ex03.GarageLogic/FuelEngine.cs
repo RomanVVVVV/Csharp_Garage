@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
     class FuelEngine : Engine
     {
         private float m_FuelCapacityInLiters;
-        private eTypesOfFuel m_typeOfFuel;
+        private eTypesOfFuel m_TypeOfFuel;
 
         public override string getEngineType()
         {
@@ -19,7 +19,31 @@ namespace Ex03.GarageLogic
         public FuelEngine(float i_MaxCapacity, eTypesOfFuel i_typeOfFuel)
         {
             m_FuelCapacityInLiters = i_MaxCapacity;
-            m_typeOfFuel = i_typeOfFuel;
+            m_TypeOfFuel = i_typeOfFuel;
+        }
+
+        public float FuelCapacityInLiters
+        {
+            get
+            {
+                return m_FuelCapacityInLiters;
+            }
+            set
+            {
+                m_FuelCapacityInLiters = value;
+            }
+        }
+
+        public eTypesOfFuel TypeOfFuel
+        {
+            get
+            {
+                return m_TypeOfFuel;
+            }
+            set
+            {
+                m_TypeOfFuel = value;
+            }
         }
     }
 }
