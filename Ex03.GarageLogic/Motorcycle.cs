@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
 
 namespace Ex03.GarageLogic
 {
@@ -15,17 +13,17 @@ namespace Ex03.GarageLogic
         {
             int numOfWheels = 2;
 
-            if(i_EngineType == "electric")
+            if (i_EngineType == "electric")
             {
                 m_Engine = new ElectricEngine(2.6f);
             }
-            else if(i_EngineType == "fuel")
+            else if (i_EngineType == "fuel")
             {
                 m_Engine = new FuelEngine(6.4f, eTypesOfFuel.Octan98);
             }
             else
             {
-                throw new ArgumentException();//CHANGE LATER FIX
+                throw new ArgumentException();
             }
 
             for (int i = 0; i < numOfWheels; i++)
@@ -42,7 +40,7 @@ namespace Ex03.GarageLogic
                             + "[model name - string]\n"
                             + "[wheels manufacturer - string]\n"
                             + "[energy percentage - float from 0 to 1]\n"
-                            + "[wheels current pressure - int from 0 to 33]\n"
+                            + "[wheels current pressure - int from 0 to 31]\n"
                             + "[license type - string AA/A2/A1/B1]\n"
                             + "[engine volume - int]\n";
 
@@ -93,7 +91,7 @@ namespace Ex03.GarageLogic
                 isInputValid = convertStringToLicenseType(licenseTypeString, out m_TypeOfLicense);
             }
 
-            if (isInputValid && (engineVolumeInt) >= 1 )
+            if (isInputValid && (engineVolumeInt) >= 1)
             {
                 m_EngineVolume = engineVolumeInt;
             }
@@ -147,14 +145,14 @@ namespace Ex03.GarageLogic
                                          + "Wheels Manufacturer Name: {2}\n"
                                          + "Wheels Current Air Pressure: {3}\n"
                                          + "Wheels Max Air Pressure: {4}\n"
-                                         + "Car Color: {5}\n"
-                                         + "Number Of Doors: {6}\n", m_ModelName, m_LicenseNumber, m_Wheels[0].ManufacturerName, m_Wheels[0].CurrentAirPressure, m_Wheels[0].MaxAirPressure, m_Color, m_NumOfDoors);
+                                         + "License type: {5}\n"
+                                         + "Engine volume: {6}\n", m_ModelName, m_LicenseNumber, m_Wheels[0].ManufacturerName, m_Wheels[0].CurrentAirPressure, m_Wheels[0].MaxAirPressure, m_TypeOfLicense.ToString(), m_EngineVolume);
 
 
             if (m_Engine is FuelEngine)
             {
                 returnString += String.Format("Fuel Capacity In Liters: {0}\n"
-                                              + "Type Of Fuel: {6}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel);
+                                              + "Type Of Fuel: {6}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel.ToString());
             }
 
             else

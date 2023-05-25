@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
 
 namespace Ex03.GarageLogic
 {
@@ -15,8 +13,8 @@ namespace Ex03.GarageLogic
         {
             int numOfWheels = 14;
             m_Engine = new FuelEngine(135, eTypesOfFuel.Soler);
-            
-            for(int i = 0; i < numOfWheels; i++)
+
+            for (int i = 0; i < numOfWheels; i++)
             {
                 m_Wheels.Add(new Wheel(26));
             }
@@ -30,7 +28,7 @@ namespace Ex03.GarageLogic
                             + "[model name - string]\n"
                             + "[wheels manufacturer - string]\n"
                             + "[energy percentage - float from 0 to 1]\n"
-                            + "[wheels current pressure - int from 0 to 33]\n"
+                            + "[wheels current pressure - int from 0 to 26]\n"
                             + "[is carrying hazardous material - 1 for yes 0 for no]\n"
                             + "[cargo volume - float]\n";
 
@@ -40,7 +38,6 @@ namespace Ex03.GarageLogic
         public override List<Type> getListOfMemberTypesToFill()
         {
             return new List<Type>() { typeof(string), typeof(string), typeof(float), typeof(int), typeof(int), typeof(float) };
-            //listOfElectricCarTypesToExpect.Add(String);
         }
 
         public override bool useInputsToRegisterVehicle(List<object> i_InputsFromUser)
@@ -90,7 +87,7 @@ namespace Ex03.GarageLogic
             }
 
 
-            if (isInputValid && (cargoVolumeFloat) >0)
+            if (isInputValid && (cargoVolumeFloat) > 0)
             {
                 m_CargoVolume = cargoVolumeFloat;
             }
@@ -104,11 +101,6 @@ namespace Ex03.GarageLogic
 
         public override string displayAllData()
         {
-            throw new NotImplementedException();
-        }
-
-        public override string displayAllData()
-        {
             string returnString;
 
             returnString = String.Format("Model Name: {0}\n"
@@ -116,14 +108,11 @@ namespace Ex03.GarageLogic
                                          + "Wheels Manufacturer Name: {2}\n"
                                          + "Wheels Current Air Pressure: {3}\n"
                                          + "Wheels Max Air Pressure: {4}\n"
-                                         + "Car Color: {5}\n"
-                                         + "Number Of Doors: {6}\n", m_ModelName, m_LicenseNumber, m_Wheels[0].ManufacturerName, m_Wheels[0].CurrentAirPressure, m_Wheels[0].MaxAirPressure, m_Color, m_NumOfDoors);
+                                         + "Hazardous cargo: {5}\n"
+                                         + "Number Of Doors: {6}\n", m_ModelName, m_LicenseNumber, m_Wheels[0].ManufacturerName, m_Wheels[0].CurrentAirPressure, m_Wheels[0].MaxAirPressure, m_DeliveringDangerousMaterials ? "yes" : "no", m_CargoVolume);
 
-            returnString += String.Format("Fuel Capacity In Liters: {0}\n" 
-                                          + "Type Of Fuel: {1}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel);
-
-            returnString += String.Format("Is Delivering Dangerous Materials? {0}\n"
-                                          + "Cargo Volume: {1}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel);
+            returnString += String.Format("Fuel Capacity In Liters: {0}\n"
+                                          + "Type Of Fuel: {1}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel.ToString());
 
             return returnString;
         }

@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
 
 namespace Ex03.GarageLogic
 {
@@ -36,13 +34,77 @@ namespace Ex03.GarageLogic
         {
             string returnString;
 
-            returnString = String.Format("Owner Name : {0}\n"
-                                         + "Owner Phone Number: {1}\n"
-                                         + "Staus: {2}\n", m_OwnerName, m_OwnerPhoneNumber, m_vehicleStatus);
+            returnString = String.Format(
+                "Owner Name : {0}\n" + "Owner Phone Number: {1}\n" + "Staus: {2}\n",
+                m_OwnerName,
+                m_OwnerPhoneNumber,
+                m_vehicleStatus);
 
             returnString += m_Vehicle.displayAllData();
 
             return returnString;
+        }
+
+        public IEnumerable<Wheel> getWheels()
+        {
+            return m_Vehicle.Wheels;
+        }
+
+        public bool checkFuelAmountCompatability(float i_InputAmount)
+        {
+            FuelEngine fuelEngine = m_Vehicle.Engine as FuelEngine;
+            float currentEnergyPercentage = fuelEngine.EnergyPercentage;
+            return fuelEngine.checkFuelAmountCompatability(i_InputAmount, currentEnergyPercentage);
+        }
+
+        public void updateVehicleFuelAmount(float i_FuelAmountToAdd)
+        {
+            FuelEngine fuelEngine = m_Vehicle.Engine as FuelEngine;
+            float fuelCapacityInLiters = fuelEngine.FuelCapacityInLiters;
+            float currentEnergyPercentage = m_Vehicle.Engine.EnergyPercentage;
+            float currentEnergyInLiters = fuelCapacityInLiters * currentEnergyPercentage;
+            float currentEnergyInLitersAfterAdd = currentEnergyInLiters + i_FuelAmountToAdd;
+
+            m_Vehicle.Engine.EnergyPercentage = currentEnergyInLitersAfterAdd / fuelCapacityInLiters;
+        }
+
+        public string getEngineType()
+        {
+            if (m_Vehicle.Engine is ElectricEngine)
+            {
+                return "electric";
+            }
+            if (m_Vehicle.Engine is FuelEngine)
+            {
+                return "fuel";
+            }
+            else
+            {
+                throw new FormatException();
+            }
+        }
+
+        public eTypesOfFuel getTypeOfFuel()
+        {
+            return (m_Vehicle.Engine as FuelEngine).TypeOfFuel;
+        }
+
+        public bool checkEnergyAmountCompatability(int i_MinutesToAdd)
+        {
+            ElectricEngine electricEngine = m_Vehicle.Engine as ElectricEngine;
+            float currentEnergyPercentage = electricEngine.EnergyPercentage;
+            return electricEngine.checkEnergyAmountCompatability(i_MinutesToAdd, currentEnergyPercentage);
+        }
+
+        public void updateVehicleEnergyAmount(int i_MinutesToAdd)
+        {
+            ElectricEngine electricEngine = m_Vehicle.Engine as ElectricEngine;
+            float maxHours = electricEngine.MaximumBatteryTimeInHours;
+            float currentEnergyPercentage = m_Vehicle.Engine.EnergyPercentage;
+            float currentEnergyInHours = maxHours * currentEnergyPercentage;
+            float currentEnergyInHoursAfterAdd = currentEnergyInHours + i_MinutesToAdd / 60;
+
+            m_Vehicle.Engine.EnergyPercentage = currentEnergyInHoursAfterAdd / maxHours;
         }
     }
 }

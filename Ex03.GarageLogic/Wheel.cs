@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Ex03.GarageLogic
+﻿namespace Ex03.GarageLogic
 {
     public class Wheel
     {
@@ -48,11 +43,6 @@ namespace Ex03.GarageLogic
             {
                 m_CurrentAirPressure = value;
             }
-        }
-
-        public void addPressure(float i_PressureToAdd)
-        {
-
         }
 
         public Wheel(int i_MaxAirPressure)

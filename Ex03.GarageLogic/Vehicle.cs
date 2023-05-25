@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ex03.GarageLogic
 {
@@ -12,10 +10,23 @@ namespace Ex03.GarageLogic
         protected string m_LicenseNumber;
         protected List<Wheel> m_Wheels = new List<Wheel>();
 
+        public List<Wheel> Wheels
+        {
+            get
+            {
+                return m_Wheels;
+            }
+        }
         public string LicenseNumber
         {
             get { return m_LicenseNumber; }
             set { m_LicenseNumber = value; }
+        }
+
+        public Engine Engine
+        {
+            get
+            { return m_Engine; }
         }
         public abstract string getDescriptionOfTypesToInput();
 

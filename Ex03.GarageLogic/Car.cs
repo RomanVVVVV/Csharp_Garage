@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
 
 namespace Ex03.GarageLogic
 {
@@ -26,7 +24,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                throw new ArgumentException();//CHANGE LATER FIX
+                throw new ArgumentException();
             }
 
             for (int i = 0; i < numOfWheels; i++)
@@ -56,7 +54,7 @@ namespace Ex03.GarageLogic
                             + "[wheels manufacturer - string]\n"
                             + "[energy percentage - float from 0 to 1]\n"
                             + "[wheels current pressure - int from 0 to 33]\n"
-                            + "[car color - string white/black/yellow/red]\n" 
+                            + "[car color - string white/black/yellow/red]\n"
                             + "[number of doors - int 2/3/4/5]\n";
 
             return outputMessage;
@@ -64,8 +62,8 @@ namespace Ex03.GarageLogic
 
         public override List<Type> getListOfMemberTypesToFill()
         {
-            return new List<Type>(){typeof(string),typeof(string),typeof(float),typeof(int),typeof(string),typeof(int)};
-            //listOfElectricCarTypesToExpect.Add(String);
+            return new List<Type>() { typeof(string), typeof(string), typeof(float), typeof(int), typeof(string), typeof(int) };
+            
         }
 
         public override bool useInputsToRegisterVehicle(List<object> i_InputsFromUser)
@@ -79,7 +77,7 @@ namespace Ex03.GarageLogic
 
             m_ModelName = i_InputsFromUser[0] as string;
 
-            if(isInputValid && (energyPercentageFloat) >= 0 && (energyPercentageFloat) <= 1)
+            if (isInputValid && (energyPercentageFloat) >= 0 && (energyPercentageFloat) <= 1)
             {
                 m_Engine.EnergyPercentage = energyPercentageFloat;
             }
@@ -101,9 +99,9 @@ namespace Ex03.GarageLogic
                 isInputValid = false;
             }
 
-            if(isInputValid)
+            if (isInputValid)
             {
-                isInputValid = convertStringToColor(colorString,out m_Color);
+                isInputValid = convertStringToColor(colorString, out m_Color);
             }
 
             if (isInputValid && (numOfDoorsInt) >= 2 && (numOfDoorsInt) <= 5)
@@ -151,9 +149,9 @@ namespace Ex03.GarageLogic
 
         public override string displayAllData()
         {
-            string returnString; 
+            string returnString;
 
-            returnString =  String.Format("Model Name: {0}\n"
+            returnString = String.Format("Model Name: {0}\n"
                                                         + "License Numer: {1}\n"
                                                         + "Wheels Manufacturer Name: {2}\n"
                                                         + "Wheels Current Air Pressure: {3}\n"
@@ -165,7 +163,7 @@ namespace Ex03.GarageLogic
             if (m_Engine is FuelEngine)
             {
                 returnString += String.Format("Fuel Capacity In Liters: {0}\n"
-                                              + "Type Of Fuel: {1}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel);
+                                              + "Type Of Fuel: {1}\n", (m_Engine as FuelEngine).FuelCapacityInLiters, (m_Engine as FuelEngine).TypeOfFuel.ToString());
             }
 
             else

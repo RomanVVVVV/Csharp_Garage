@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ex03.GarageLogic.MyEnums;
+﻿using Ex03.GarageLogic.MyEnums;
+using System;
 
 namespace Ex03.GarageLogic
 {
-    class FuelEngine : Engine
+    public class FuelEngine : Engine
     {
         private float m_FuelCapacityInLiters;
         private eTypesOfFuel m_TypeOfFuel;
@@ -44,6 +41,24 @@ namespace Ex03.GarageLogic
             {
                 m_TypeOfFuel = value;
             }
+        }
+
+        public bool checkFuelAmountCompatability(float i_InputAmount, float i_CurrentEnergyPercentage)
+        {
+            float currentEnergyInLiters = i_CurrentEnergyPercentage * m_FuelCapacityInLiters;
+            bool isFuelAmountCompatible = false;
+
+            if (currentEnergyInLiters + i_InputAmount <= m_FuelCapacityInLiters)
+            {
+                isFuelAmountCompatible = true;
+            }
+            else
+            {
+                throw new ValueOutRangeException(new Exception(), 0, m_FuelCapacityInLiters - currentEnergyInLiters);
+                isFuelAmountCompatible = false;
+            }
+
+            return isFuelAmountCompatible;
         }
     }
 }
